@@ -35,7 +35,6 @@ const Search = () => {
             };
         }
 
-        
     }, [term]);
 
     const renderedResults = results.map((result) => {
