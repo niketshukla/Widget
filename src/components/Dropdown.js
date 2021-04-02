@@ -1,7 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 const Dropdown = ({ options, selected, onSelectedChange }) => {
     const [open, setOpen] = useState(false);
+    const ref = useRef();
+
+    useEffect(() => {
+        document.body.addEventListener('click', (event) => {
+            if(ref.current && ref.current.contains(event.target)){
+                return;
+            }
+            setOpen(false);
+        }, { capture:true });   // {capture:true} should be included in the latest versions of react to have the same effect
+    }, []);
 
     const renderedOptions = options.map((option) => {
         if (option.value === selected.value) {
@@ -16,7 +26,7 @@ const Dropdown = ({ options, selected, onSelectedChange }) => {
     });
 
     return(
-        <div className="ui form">
+        <div ref={ref} className="ui form">
             <div className="field">
                 <label className="label">Select a color</label>
                 <div onClick={() => setOpen(!open)} className={`ui selection dropdown ${open ? "visible active" : ""}`}>
